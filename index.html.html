@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kirsten &amp; Marco</title>
+<style>
+:root{color-scheme:dark;--bg1:#14070f;--bg2:#3d0f2b;--card:rgba(32,10,26,.74);--tx:#fceff4;--mu:#cba4b7;--ac:#ff3d7f;--ac2:#ff8a5c;--bd:rgba(255,120,170,.28);--in:rgba(255,255,255,.07);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root{color-scheme:light;--bg1:#fff3f7;--bg2:#ffc9dd;--card:rgba(255,255,255,.82);--tx:#3a1024;--mu:#8a5570;--bd:rgba(200,40,100,.28);--in:rgba(120,20,60,.07)}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--tx);background:var(--bg1);background-image:radial-gradient(ellipse at 20% 0%,var(--bg2),transparent 60%),radial-gradient(ellipse at 90% 100%,var(--bg2),transparent 55%);background-attachment:fixed}
+main{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:16px 16px 90px}
+h1{font-size:28px;margin:6px 0 2px;letter-spacing:.5px;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mu);font-size:14px;margin:0 0 14px;font-style:italic}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.tag{display:inline-block;font:600 11px system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--ac2);margin-bottom:10px}
+.txt{font-size:21px;line-height:1.4;min-height:130px}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--in);color:var(--tx);border-radius:14px;padding:11px 14px;font:600 14px system-ui,sans-serif}
+button.pri{background:linear-gradient(90deg,var(--ac),var(--ac2));border:0;color:#fff}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.row>*{flex:1 1 auto}
+.chips{display:flex;gap:6px;margin:0 0 12px;overflow-x:auto}.chips button{padding:7px 12px;border-radius:99px;white-space:nowrap}.chips button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+input[type=text],textarea{width:100%;background:var(--in);border:1px solid var(--bd);color:var(--tx);border-radius:14px;padding:12px;font-size:16px;margin:6px 0}
+label{font:13px system-ui,sans-serif;color:var(--mu)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;gap:6px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+nav button{flex:1;max-width:170px;border:0;background:transparent;color:var(--mu)}nav button.on{color:var(--ac);background:var(--in)}
+.msg{max-width:88%;margin:10px 0;padding:11px 14px;border-radius:18px;border:1px solid var(--bd);background:var(--card);font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.msg.me{margin-left:auto;border-color:var(--ac)}
+.msg small{display:block;font:11px system-ui,sans-serif;color:var(--mu);margin-bottom:4px}
+.msg img{max-width:100%;border-radius:12px;margin-top:8px;display:block}
+.msg .x{float:right;border:0;background:none;padding:0 0 0 8px;color:var(--mu)}
+.hint{font:13px system-ui,sans-serif;color:var(--mu);margin-top:12px;line-height:1.4}
+.seg{display:flex;gap:8px}.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.hide{display:none}.card.late{border-color:var(--ac);box-shadow:0 0 18px var(--ac)}
+</style></head><body>
+<main>
+<h1>Kirsten &amp; Marco</h1>
+<p class="sub">Nur für euch zwei. Eine Aufgabe oder Frage pro Tag – überspringen darf man jede Karte.</p>
+<div class="card hide" id="daily" style="margin-bottom:12px;padding:14px"><button id="reset" style="padding:6px 10px;font-size:12px;margin-left:8px">Namen ändern</button></div>
+
+<section id="setup" class="card hide">
+<span class="tag">Los geht’s</span>
+<p>Wer bist du?</p>
+<div class="row"><button class="pri" id="pickM">Ich bin Marco</button><button class="pri" id="pickK">Ich bin Kirsten</button></div>
+</section>
+
+<section id="t-card" class="hide">
+
+<div class="row" id="mood" style="flex-wrap:wrap;gap:6px;margin-bottom:6px"></div>
+<div class="hint" style="margin-bottom:8px">Wie fühlst du dich gerade? Die Stufe passt sich an.</div>
+<div class="hint" style="margin-bottom:10px">Du kannst jeden Tag nur 2 Karten pro Kategorie wählen.</div>
+<div class="card"><div class="txt" id="ctxt"></div><textarea id="qans" rows="3" class="hide" placeholder="Deine ehrliche Antwort …"></textarea>
+<div class="row"><button id="next">Nächste Karte</button><button id="send">Per WhatsApp senden</button><button class="pri hide" id="qsend">Antwort senden</button></div>
+<div class="row"><button id="wbtn">📝 Wunschliste</button></div>
+<div class="row"><button id="nudge">🔔 Partner anstupsen</button></div>
+</div>
+</section>
+
+
+<section id="t-wish" class="hide">
+<div class="card"><div class="txt" style="margin-bottom:8px">Wunschliste</div>
+<div class="row"><input id="wnew" placeholder="Ich möchte mal …" style="flex:1"><button class="pri" id="wadd">Hinzufügen</button></div>
+<ul id="wlist" style="padding-left:18px"></ul></div>
+<div class="row"><button id="wsend">Liste per WhatsApp schicken</button><button id="wback">Zurück</button></div>
+</section>
+</main>
+<script>
+const T=[
+[1,'b','Schreib {P} eine Nachricht, die mit „Ich kann nicht aufhören, daran zu denken, wie du …“ beginnt – und mach sie richtig heiß.'],
+[1,'b','Gib {P} heute Abend 10 Minuten Massage mit Öl. Regel: Es darf nichts „passieren“ – nur genießen und anheizen.'],
+[1,'b','Flüstere {P} das nächste Mal ins Ohr, was du später mit {ihm} vorhast.'],
+[1,'b','Küsse {P} heute dreimal, als wäre es euer erster Kuss – jedes Mal länger.'],
+[1,'b','Zieh dir heute etwas an, das nur für {P} gedacht ist, und zeig es im richtigen Moment.'],
+[2,'w','Mach ein spontanes Foto von deinen Brüsten (Hals abwärts reicht) und lade es hier hoch. Eine Überraschung für ihn. 📷'],
+[2,'m','Mach ein Foto von dir – frisch geduscht, im Spiegel, wie du magst – und lade es hier hoch. Sie wartet darauf. 📷'],
+[2,'b','Geh unauffällig zu {P}, fass {ihm} kurz in den Schritt und geh weiter, als wäre nichts gewesen.'],
+[2,'b','Nimm eine Sprachnachricht (max. 30 Sek.) auf, in der du sagst, was du jetzt am liebsten tun würdest, und schick sie {ihm}.'],
+[2,'b','Verbinde {P} die Augen und verwöhne {ihn} 10 Minuten mit Händen, Mund und einem Eiswürfel. {Er} darf nur raten, wo du gleich küsst.'],
+[2,'b','Such ein Lied aus und zieh dich langsam vor {P} aus. {Er} darf nur zuschauen, nicht anfassen – bis das Lied zu Ende ist.'],
+[2,'m','Zieh {P} heute ganz langsam aus und küsse jede freie Stelle – bis sie dich bittet weiterzumachen.'],
+[2,'w','Setz dich heute Abend angezogen auf seinen Schoß und bring ihn nur mit Küssen und Bewegung an den Rand. Dann steh auf und lächle.'],
+[3,'b','Ortswechsel: Habt heute Sex an einem Ort in eurer Wohnung, an dem ihr es noch nie getan habt.'],
+[3,'b','Edging: {P} darf heute erst kommen, wenn du es erlaubst. Bring {ihn} dreimal bis kurz davor.'],
+[3,'b','Rollenspiel: Ihr seid euch fremd und lernt euch in einer Bar kennen. Verführe {P} 20 Minuten lang – dann ist alles erlaubt.'],
+[2,'b','Jeder schreibt eine Fantasie auf einen Zettel. Tauscht, lest vor und sucht gemeinsam aus, was ihr heute probiert.'],
+[2,'b','Dirty Talk: Sag {P} beim Sex drei Dinge, die du noch nie laut gesagt hast.'],
+[3,'w','Du bestimmst heute alles: Position, Tempo, Dauer. Er darf die Hände nur auf Anweisung benutzen.'],
+[3,'m','Heute geht es nur um sie. Du hörst erst auf, wenn sie „genug“ sagt.'],
+[1,'b','Duscht oder badet zusammen und wascht euch gegenseitig – langsam und überall.'],
+[1,'b','Sex ohne Worte: nur Blicke, Atem und Berührung.'],
+[3,'b','Plant ein Sex-Date am Wochenende: Handys aus, Kerzen, Zeit für Stunden. Wer verführt wen, losen wir aus.'],
+[4,'b','Klärt vorher ein Safeword. Danach darf {P} dir 10 Minuten lang Befehle geben, und du gehorchst ohne Widerrede.'],
+[4,'b','Fessel {P} mit einem Seidentuch oder Schal die Handgelenke ans Bett (nicht zu fest, Safeword vorher klären) und mach mit {ihm}, was du willst.'],
+[4,'b','Schick {P} tagsüber drei Nachrichten, jede dreckiger als die vorherige. Abends wird eingelöst, was drinsteht.'],
+[4,'b','Trag heute den ganzen Tag keine Unterwäsche und verrate es {P} erst unterwegs – flüsternd, direkt ins Ohr.'],
+[4,'b','Fütter {P} mit verbundenen Augen mit Obst, Sahne oder Schokolade – und leck danach den Rest von {ihm} ab.'],
+[4,'b','Zeig {P}, wie du dich selbst anfasst, wenn du allein bist. {Er} darf zuschauen und dir sagen, was du als Nächstes tun sollst.'],
+[4,'b','Telefonsex: Geh in einen anderen Raum (oder ruf an, wenn einer unterwegs ist) und führe {P} per Stimme Schritt für Schritt zum Höhepunkt.'],
+[4,'b','Klaps-Spiel: Frag vorher, wie fest {P} es mag, und verteile heute Abend ein paar Klapse auf den Po – zwischen den Küssen.'],
+[3,'b','Sex vor dem Spiegel: Schaut euch dabei zu und sagt euch gegenseitig laut, was ihr seht und was euch daran anmacht.'],
+[4,'b','Kleiderordnung: {P} bestimmt heute Abend, was du anziehst – und was du davon für {ihn} wieder ausziehst.'],
+[4,'b','Bring {P} zum Höhepunkt, ohne die Geschlechtsteile direkt zu berühren – nur Hals, Ohren, Brust und Innenseiten der Schenkel.'],
+[2,'b','Wettbewerb: Wer bringt den anderen in 15 Minuten zuerst zum Stöhnen, ohne selbst einen Laut von sich zu geben?'],
+[2,'b','Schreibt euch gegenseitig eine kurze, schmutzige Geschichte über euch beide (10 Zeilen), lest sie euch vor und spielt die beste Stelle nach.'],
+[3,'b','Such gemeinsam mit {P} online ein Spielzeug aus, das euch beide neugierig macht – und probiert es aus, sobald es da ist.'],
+[3,'b','Rollentausch: Wer sonst führt, wird heute geführt. Der andere bestimmt Tempo und Reihenfolge.'],
+[4,'b','Halte {P} fest, schau {ihm} in die Augen und sag laut, was du an {ihm} im Bett am geilsten findest. Dann zeig es.'],
+[4,'w','Wähl einen privaten Ort, an dem ihr ungestört seid (Auto in der Einfahrt, Balkon bei Nacht, Hotelzimmer), und überrasch ihn dort mit Mund und Hand.'],
+[4,'w','Schick ihm ein Foto von dir, nur mit seinem Hemd oder einem Handtuch bekleidet, und schreib dazu, was du in 30 Minuten mit ihm tun willst. 📷'],
+[4,'m','Verwöhne sie ausgiebig mit dem Mund, ohne Zeitlimit, und hör erst auf, wenn sie dich dreimal darum gebeten hat.'],
+[4,'m','Schick ihr ein Foto von dir im Bett mit der Frage „Wie weit willst du mich heute Abend bringen?“ 📷'],
+[1,'b','Nutzt heute Abend Eis, warmes Öl und eine Feder, um euch gegenseitig am ganzen Körper zu erforschen. Keine Eile.'],
+[1,'b','Sag {P} heute Abend, wo und wie du angefasst werden willst. Nur mit Worten, ohne Zeigen.'],
+[4,'b','Setzt euch zusammen in die Wanne und sprecht offen darüber, ob Pipi-Spiele für euch beide infrage kommen: was geht, was nie. Nur wenn beide Lust haben, geht es weiter.'],
+[4,'b','Dusch-Spiel: Pinkelt euch nur dann gegenseitig an (Beine, Bauch, Rücken), wenn beide es wirklich wollen. Danach duscht ihr alles gründlich ab.'],
+[4,'b','Schau {P} beim Pinkeln zu oder lass dir zuschauen. Sag danach ehrlich, wie es sich angefühlt hat.'],
+[4,'b','Trinkspiel: Ihr trinkt beide viel Wasser. Wer zuerst dringend muss, verliert und erfüllt dem anderen in der Dusche einen Wunsch.'],
+[4,'w','Pinkel in der Dusche vor ihm und lass ihn dir dabei zusehen. Achte darauf, was das mit ihm macht.'],
+[4,'m','Pinkel in der Dusche vor ihr und lass sie bestimmen, wohin du zielst. Danach wird alles gemeinsam abgespült.'],
+[4,'b','Schreib {P} mit einem abwaschbaren Stift ein dreckiges Wort auf die Haut, an eine Stelle, die nur du kennst.'],
+[4,'b','Macht ein privates erotisches Foto von {P}, das nur ihr beide seht, und löscht es danach sofort wieder. 📷'],
+[4,'b','Haltet beide die Hände hinter dem Rücken. Wer sie zuerst bewegt, verliert und muss dem anderen jeden Wunsch erfüllen.'],
+[2,'b','Küsst euch zwei Minuten lang überall, nur nicht auf den Mund. Wer zuerst nachgibt, verliert.'],
+[4,'b','Wechselt im Mund zwischen Eis und heißem Tee und verwöhnt {P} damit an den Stellen, wo er oder sie es am meisten mag.'],
+[3,'b','Sex im völlig dunklen Raum: kein Licht, kein Handy, nur Hören, Fühlen, Riechen.'],
+[2,'b','Vereinbart ein Alltagswort. Wenn einer von euch es sagt, heißt es: „Ich will dich jetzt.“ Der andere muss spontan reagieren.'],
+[4,'b','Schick {P} eine Nachricht, in der du beschreibst, was du ihm oder ihr heute Abend gleich an der Tür antun willst. Dann tu es.'],
+[2,'b','Versteckt einen kleinen Gegenstand in der Wohnung. Wer ihn findet, darf bestimmen, was als Nächstes passiert.'],
+[4,'b','Du bestimmst heute Abend ein einziges Wort, das {P} immer sagen muss, wenn du ihn oder sie anfasst.'],
+[3,'b','Such in der Wohnung einen Gegenstand, mit dem du {P} heute Abend verwöhnen willst (Seidenschal, Feder, Eiswürfel, kühler Löffel, weicher Pinsel), und schick ein Foto davon, ohne zu verraten, was du vorhast. 📷'],
+[2,'b','Foto-Rätsel: Schick {P} das Foto eines Gegenstands aus der Wohnung. {P} muss raten, wofür du ihn heute Abend einsetzt. Eine falsche Antwort heißt: eine Aufgabe von dir. 📷'],
+[3,'b','Zweckentfremdet: Verwöhne {P} 10 Minuten lang nur mit Dingen aus dem Haushalt, außen am Körper (Feder, Pinsel, Eiswürfel, Seidentuch). {P} darf nur raten, was du gerade benutzt.'],
+[4,'w','Such einen Gegenstand aus, den du heute Abend bei dir benutzen willst (nur außen am Körper), schick ihm ein Foto davon und schreib dazu, was du damit vorhast. 📷'],
+[4,'m','Such einen Gegenstand aus der Wohnung aus, schick ihr ein Foto davon und lass sie bestimmen, welche Stelle an ihr du damit heute Abend berühren sollst. 📷'],
+[4,'b','Gurken-Spiel: Geht gemeinsam eine Gurke kaufen. Zieh ein Kondom drüber und verwöhne {P} damit langsam.'],
+[4,'b','Bananen-Spiel: Eine Banane mit Kondom drüber. Wer verwöhnt wird, bestimmt Tempo und Tiefe.'],
+[4,'w','Schick ihm ein Foto von dem Obst oder Gemüse, das du heute Abend für dich ausgewählt hast, und schreib dazu, wie du es benutzen wirst. 📷'],
+[4,'w','Zeig ihm, wie du dich selbst mit einer Gurke oder Banane verwöhnst, mit Kondom drüber. Er darf zuschauen und sagen, was er sehen will.'],
+[3,'b','Such einen Gegenstand aus der Wohnung aus, den ihr beide spannend findet. Kondom drüber, dann probiert ihr ihn gemeinsam aus.'],
+[4,'b','Dominanz-Abend: Du bestimmst drei Stunden lang alles, {P} gehorcht. Vorher sprecht ihr ein Safeword ab. Danach wird gewechselt.'],
+[4,'b','Verbinde {P} die Augen und fessle die Handgelenke mit einem Schal. {P} darf sich nicht bewegen und nicht sprechen, bis du es erlaubst.'],
+[4,'b','Bondage mit Schals: Fixiere {P} an Handgelenken und Knöcheln am Bett (nicht zu fest), lass das Licht an und verwöhne {P}, bis {P} bettelt.'],
+[4,'b','Massagekerze: Träufle {P} warmes Wachs auf Rücken und Bauch. Nimm nur eine Massagekerze mit niedriger Schmelztemperatur und teste es vorher an deinem Handgelenk.'],
+[4,'b','Nippelspiel: Streichle, sauge und kneife {P} an den Brustwarzen, erst sanft, dann fester. {P} sagt dir, wann es genug ist.'],
+[4,'b','Bring {P} dreimal fast zum Höhepunkt, hör jedes Mal auf und lass {P} dich anflehen weiterzumachen.'],
+[4,'b','Edging-Marathon: Ihr verwöhnt euch abwechselnd eine Stunde lang. Jeder darf nur kommen, wenn der andere es erlaubt.'],
+[4,'b','Befehl per Nachricht: Schick {P} tagsüber eine Anweisung, die {P} heimlich ausführen muss (zum Beispiel Unterwäsche ausziehen und ein Foto davon schicken). 📷'],
+[4,'w','Lass ihn eine Stunde lang bestrafen und belohnen: Für jede freche Antwort gibt es einen Klaps, für jeden Gehorsam einen Kuss.'],
+[4,'m','Knie vor ihr nieder und tu eine Stunde lang genau das, was sie dir sagt.'],
+[2,'b','Sprachaufnahme: Sag in einer Aufnahme, was du mit {P} heute Abend vorhast. {P} hört sie sich an, bevor ihr euch seht.'],
+[3,'b','Erotisches Fotoshooting zu zweit: Stellt euch in den eindeutigsten Posen vor die Kamera, die ihr euch zutraut. Die Fotos bleiben auf einem Gerät oder werden sofort gelöscht. 📷'],
+[3,'b','Würfelspiel: Ein Würfel bestimmt die Stelle am Körper, der andere die Handlung (Mund, Hand, Zunge, Spielzeug). Was gewürfelt wird, passiert.'],
+[4,'b','Analspiel: Erforscht gemeinsam den Hintern, mit Fingern, Zunge oder einem Spielzeug. Wer berührt wird, gibt das Tempo vor.'],
+[4,'b','Spielzeug-Abend: Benutzt ein oder mehrere Spielzeuge. {P} bestimmt, wo, wie fest und wie lange.'],
+[3,'b','Schreibt jeder eine Fantasie auf, die ihr noch nie ausgesprochen habt. Tauscht, lest vor und sucht eine aus, die ihr zusammen nachspielen könnt.']];
+const Q=['Was war der heißeste Moment, den wir bisher hatten?','Welche Berührung von mir macht dich sofort schwach?','Was möchtest du schon lange ausprobieren, hast dich aber nie getraut?','Wo würdest du am liebsten mal mit mir schlafen?','Wann fühlst du dich am meisten begehrt?','Was soll ich öfter tun – und was weniger?','Welche Fantasie hast du mir noch nie erzählt?','Von 1 bis 10: Wie viel Lust hast du gerade auf mich? Was bringt sie auf 10?','Was mochtest du früher an uns im Bett am meisten – was holen wir zurück?','Wie sieht dein perfekter Abend aus, der im Bett endet?','Gibt es eine Grenze, die ich kennen sollte?','Was an meinem Körper magst du am liebsten anschauen?','Welche Pipi-Spiele (Dusche, Wanne, Zuschauen) würdest du gern mal probieren – und welche auf keinen Fall?','Was ist deine dreckigste Fantasie, die du mir bisher verschwiegen hast?','Welches Wort beim Sex macht dich besonders an – und welches gar nicht?','Wenn alles erlaubt wäre: Was würdest du heute Nacht mit mir machen?','Wann hast du dich zuletzt nach mir gesehnt, und wie war das?','Welche Rolle würdest du gern mal mit mir spielen?','Bei welcher Berührung wirst du am schnellsten richtig erregt?','Was soll ich dir ins Ohr sagen, wenn du kurz davor bist?','Welche Stelle an dir sollte ich viel öfter küssen?','Wie würdest du es finden, mal ein paar Tage bewusst ohne Sex zu bleiben, um die Lust aufzustauen?','Welche Szene, Geschichte oder welcher Film macht dich an – und was genau daran?','Was darf ich bei dir ausprobieren, ohne dass du Ausreden suchst?','Was ist das Verruchteste, das du dir an einem Ort vorstellst, an dem wir wirklich ungestört wären?','Was ist das Extremste, das du dir mit mir vorstellen kannst – und wo liegt deine Grenze?','Wer möchtest du im Bett lieber sein: der, der führt, oder der, der geführt wird? Wie weit soll das gehen?','Welche Art von Schmerz oder Härte (Klaps, Kneifen, Wachs) macht dich an, und welche gar nicht?','Welches Material oder Kleidungsstück (Leder, Latex, Seide) turnt dich an?','Wie wichtig ist dir das Gefühl, die Kontrolle ganz abzugeben?','Was würdest du mit mir tun, wenn nur unsere Regeln dich stoppen könnten?'];
+const LV=['Alle','Zärtlich','Heiß','Wild','Versaut'],$=s=>document.querySelector(s);
+let S={};try{S=JSON.parse(localStorage.getItem('kn')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('kn',JSON.stringify(S))}catch(e){}};
+let db=null,assets=null,col=null,warned=false,doneDays=new Set(),pending=null,cur=null,lvl=0,role='';
+function fill(t,nm,rl){const m=(rl||S.role)==='m';return t.replace(/\{P\}/g,nm||S.pn||'dein Partner').replace(/\{ihn\}/g,m?'sie':'ihn').replace(/\{ihm\}/g,m?'ihr':'ihm').replace(/\{Er\}/g,m?'Sie':'Er')}
+function show(t){['card'].forEach(k=>$('#t-'+k).classList.toggle('hide',k!==t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+const HOLD=/Pipi|[Pp]inkel|Trinkspiel/;
+const D=T.concat(Q.map(q=>[0,'q',q])).filter(c=>!HOLD.test(c[2]));
+function levelPool(){return D.map((c,i)=>i).filter(i=>(D[i][1]==='b'||D[i][1]==='q'||D[i][1]===S.role)&&(lvl===0||D[i][1]==='q'||D[i][0]===lvl))}
+function todaySet(){const key=dk(Date.now());let h=0;for(const ch of key+S.role+lvl)h=(h*31+ch.charCodeAt(0))|0;const rnd=()=>{h=(h*1664525+1013904223)|0;return (h>>>0)/4294967296};const arr=levelPool();for(let k=arr.length-1;k>0;k--){const j=Math.floor(rnd()*(k+1));[arr[k],arr[j]]=[arr[j],arr[k]]}return arr.slice(0,2)}
+function draw(){const today=todaySet();if(!today.length){cur=null;const m=document.createElement('div');m.className='hint';m.textContent='In dieser Stufe gibt es gerade keine Karte. Wechsle bitte die Stufe.';$('#ctxt').replaceChildren(m);['#qans','#qsend','#send'].forEach(x=>$(x).classList.add('hide'));return}
+let left=today.filter(i=>i!==cur);if(!left.length)left=today;
+const pick=left[Math.floor(Math.random()*left.length)];cur=pick;const c=D[pick];
+const isQ=c[1]==='q';const lbl=document.createElement('div');lbl.className='hint';lbl.textContent=isQ?'Frage von '+S.pn+' – deine Antwort geht an '+S.pn:(c[1]==='b'?'Aufgabe zusammen':c[1]==='m'?'Aufgabe für Marco':'Aufgabe für Kirsten');const body=document.createElement('div');body.textContent=isQ?c[2]:fill(c[2]);$('#ctxt').replaceChildren(lbl,body);$('#qans').value='';['#qans','#qsend'].forEach(x=>$(x).classList.toggle('hide',!isQ));['#send'].forEach(x=>$(x).classList.toggle('hide',isQ))}
+
+const MOODS=[['😴 Müde',1],['😏 Verspielt',2],['🔥 Neugierig',3],['😈 Lust auf mehr',4],['🎲 Egal',0]];
+function moods(){const el=$('#mood');el.textContent='';MOODS.forEach(([n,l])=>{const b=document.createElement('button');b.textContent=n;b.className=l===lvl?'on':'';b.onclick=()=>{lvl=l;moods();draw()};el.appendChild(b)})}
+function wishes(){if(!S.wishes){S.wishes=['Ein Frühstück im Bett','Ein Abend, an dem du alles bestimmst','Eine Massage mit Öl','Ein Wochenende ohne Handy','Ein Date, das ich nicht planen muss'];save()}return S.wishes}
+function renderWishes(){const ul=$('#wlist');ul.textContent='';wishes().forEach((w,i)=>{const li=document.createElement('li');li.style.margin='6px 0';li.textContent=w+' ';const x=document.createElement('button');x.textContent='✕';x.onclick=()=>{wishes().splice(i,1);save();renderWishes()};li.appendChild(x);ul.appendChild(li)})}
+$('#wbtn').onclick=()=>{$('#t-card').classList.add('hide');$('#t-wish').classList.remove('hide');renderWishes()};
+$('#wback').onclick=()=>{$('#t-wish').classList.add('hide');$('#t-card').classList.remove('hide')};
+$('#wadd').onclick=()=>{const v=$('#wnew').value.trim();if(!v)return;wishes().push(v);save();$('#wnew').value='';renderWishes()};
+$('#wsend').onclick=()=>{if(!wishes().length){alert('Noch keine Wünsche eingetragen.');return}waOpen(S.me+' wünscht sich:\n\n'+wishes().map(w=>'• '+w).join('\n'))};
+
+function start(){lvl=1;S={...S,pn:S.me==='Marco'?'Kirsten':'Marco'};save();$('#setup').classList.add('hide');$('#daily').classList.remove('hide');moods();draw();show('card')}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{role=b.dataset.r;document.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b))});
+$('#pickM').onclick=()=>{S={...S,me:'Marco',pn:'Kirsten',role:'m'};save();start()};
+$('#pickK').onclick=()=>{S={...S,me:'Kirsten',pn:'Marco',role:'w'};save();start()};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+$('#nudge').onclick=()=>waOpen('Du bist dran 😘 Mach mal was 😘');
+$('#next').onclick=()=>{if(lvl>=1&&lvl<4)lvl++;moods();draw()};
+const dk=t=>{const d=new Date(t);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
+const NUM={k:'4916093358588',m:'491714133055'};
+function waOpen(text0){const text='📱 Aus unserer App „Kirsten & Marco“:\n\n'+text0;const p=(S.pn||'').trim().toLowerCase();const num=p.startsWith('k')?NUM.k:p.startsWith('m')?NUM.m:'';const a=document.createElement('a');a.href='https://wa.me/'+num+'?text='+encodeURIComponent(text);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+$('#send').onclick=()=>waOpen(S.me+' hatte die Aufgabe:\n\n'+fill(D[cur][2])+'\n\nHier das Ergebnis 👇');
+$('#qsend').onclick=()=>{const a=$('#qans').value.trim();if(!a)return;waOpen(S.me+' hatte die Frage:\n\n'+fill(D[cur][2])+'\n\nMeine Antwort: '+a)};
+$('#reset').onclick=()=>{S.role='';save();location.reload()};
+if(S.role&&S.me&&S.pn){start()}else{$('#setup').classList.remove('hide')}
+</script></body></html>
